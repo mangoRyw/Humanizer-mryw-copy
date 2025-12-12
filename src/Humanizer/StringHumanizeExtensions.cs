@@ -1,4 +1,6 @@
 using System.Runtime.InteropServices;
+using System.Linq;
+
 
 namespace Humanizer;
 
@@ -92,7 +94,7 @@ public static partial class StringHumanizeExtensions
         // if input is all capitals (e.g. an acronym) then return it without change
         if (input.All(char.IsUpper))
         {
-            return input;
+            input = input.ToLowerInvariant();
         }
 
         // if input contains a dash or underscore which precedes or follows a space (or both, e.g. freestanding)
