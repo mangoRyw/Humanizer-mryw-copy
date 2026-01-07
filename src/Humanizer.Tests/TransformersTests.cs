@@ -34,4 +34,11 @@
     [InlineData("Title Case", "TITLE CASE")]
     public void TransformToUpperCase(string input, string expectedOutput) =>
         Assert.Equal(expectedOutput, input.Transform(To.UpperCase));
+
+    [Theory]
+    [InlineData("a great article", "A Great Article")]
+    [InlineData("yet another conjunction", "Yet Another Conjunction")]
+    [InlineData("by this preposition", "By This Preposition")]
+    public void TransformToTitleCase_FirstWordExceptions(string input, string expectedOutput) =>
+        Assert.Equal(expectedOutput, input.Transform(To.TitleCase));
 }
