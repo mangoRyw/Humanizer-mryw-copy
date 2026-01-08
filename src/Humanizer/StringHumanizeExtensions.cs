@@ -32,19 +32,20 @@ public static partial class StringHumanizeExtensions
     private static Regex FreestandingSpacingCharRegex() => FreestandingSpacingCharRegexField;
 #endif
 
-   static string FromUnderscoreDashSeparatedWords(string input)
+    static string FromUnderscoreDashSeparatedWords(string input)
     {
-        #if NET7_0_OR_GREATER
-            return string.Create(input.Length, input, (span, state) =>
-            {
-                state.AsSpan().CopyTo(span);
-                span.Replace('_', ' ');
-                span.Replace('-', ' ');
-            });
-        #else
-            return input.Replace('_', ' ').Replace('-', ' ');
-        #endif
+#if NET7_0_OR_GREATER
+        return string.Create(input.Length, input, (span, state) =>
+        {
+            state.AsSpan().CopyTo(span);
+            span.Replace('_', ' ');
+            span.Replace('-', ' ');
+        });
+#else
+        return input.Replace('_', ' ').Replace('-', ' ');
+#endif
     }
+
     static string FromPascalCase(string input)
     {
         var result = string.Join(" ", PascalCaseWordPartsRegex()
