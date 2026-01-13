@@ -10,7 +10,7 @@ partial class ToTitleCase : ICulturedStringTransformer
 #if NET7_0_OR_GREATER
     [GeneratedRegex(WordPattern)]
     private static partial Regex WordRegexGenerated();
-    
+
     private static Regex WordRegex() => WordRegexGenerated();
 #else
     private static readonly Regex WordRegexDefinition = new(WordPattern, RegexOptions.Compiled);
@@ -23,10 +23,19 @@ partial class ToTitleCase : ICulturedStringTransformer
         var matches = WordRegex().Matches(input);
         var builder = new StringBuilder(input);
         var textInfo = culture.TextInfo;
+        var isFirstWord = true;
+
         foreach (Match word in matches)
         {
             var value = word.Value;
-            if (AllCapitals(value) || IsArticleOrConjunctionOrPreposition(value))
+            var currentIsFirst = isFirstWord;
+            isFirstWord = false;
+
+            if (AllCapitals(value))
+            {
+                continue;
+            }
+            if (!currentIsFirst && IsArticleOrConjunctionOrPreposition(value))
             {
                 continue;
             }
