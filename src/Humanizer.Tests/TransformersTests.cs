@@ -39,6 +39,7 @@
     [InlineData("a great article", "A Great Article")]
     [InlineData("yet another conjunction", "Yet Another Conjunction")]
     [InlineData("by this preposition", "By This Preposition")]
+    [InlineData("NASA and the future", "NASA and the Future")]
     public void TransformToTitleCase_FirstWordExceptions(string input, string expectedOutput) =>
         Assert.Equal(expectedOutput, input.Transform(To.TitleCase));
 }

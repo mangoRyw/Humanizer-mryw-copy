@@ -28,17 +28,17 @@ partial class ToTitleCase : ICulturedStringTransformer
         foreach (Match word in matches)
         {
             var value = word.Value;
-
-            if(AllCapitals(value))
-            {
-                continue;
-            }
-            if (!isFirstWord && IsArticleOrConjunctionOrPreposition(value))
-            {
-                continue;
-            }
-
+            var currentIsFirst = isFirstWord;
             isFirstWord = false;
+
+            if (AllCapitals(value))
+            {
+                continue;
+            }
+            if (!currentIsFirst && IsArticleOrConjunctionOrPreposition(value))
+            {
+                continue;
+            }
 
             builder[word.Index] = textInfo.ToUpper(value[0]);
             Overwrite(builder, word.Index + 1, textInfo.ToLower(value[1..]));
