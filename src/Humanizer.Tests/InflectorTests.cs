@@ -40,6 +40,13 @@ public class InflectorTests
         Assert.Equal(plural, singular.Pluralize(false));
     }
 
+    [Fact]
+    public void Pluralize_Preserves_AllCaps_Suffix()
+    {
+        Assert.Equal("SINGULAR TYPE NAMES", "SINGULAR TYPE NAME".Pluralize());
+        Assert.Equal("SINGULAR TYPE NAMES", "singular type name".Humanize(LetterCasing.AllCaps).Pluralize());
+    }
+
     [Theory]
     [ClassData(typeof(PluralTestSource))]
     public void Singularize(string singular, string plural) =>

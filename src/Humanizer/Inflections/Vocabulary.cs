@@ -195,9 +195,36 @@ public partial class Vocabulary
     bool IsUncountable(string word) =>
         uncountables.Contains(word);
 
-    static string MatchUpperCase(string word, string replacement) =>
-        char.IsUpper(word[0]) &&
-        char.IsLower(replacement[0]) ? StringHumanizeExtensions.Concat(char.ToUpper(replacement[0]), replacement.AsSpan(1)) : replacement;
+    static string MatchUpperCase(string word, string replacement)
+    {
+        var lettersCount = 0;
+        var allLettersUpper = true;
+        foreach (var c in word)
+        {
+            if (char.IsLetter(c))
+            {
+                lettersCount++;
+                if (!char.IsUpper(c))
+                {
+                    allLettersUpper = false;
+                    break;
+                }
+            }
+        }
+
+        // If the input contains multiple letters and all of them are uppercase
+        // (e.g. an ALL CAPS phrase or acronym of length > 1), return the replacement
+        // fully uppercased so the plural suffix matches the input casing.
+        if (lettersCount > 1 && allLettersUpper)
+        {
+            return replacement.ToUpperInvariant();
+        }
+
+        return char.IsUpper(word[0]) && char.IsLower(replacement[0])
+            ? StringHumanizeExtensions.Concat(char.ToUpper(replacement[0]), replacement.AsSpan(1))
+            : replacement;
+    }
+
 
     /// <summary>
     /// If the word is the letter s, singular or plural, return the letter s singular
